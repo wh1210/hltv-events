@@ -1,0 +1,26 @@
+name: Daily CS2 Schedule
+
+on:
+  schedule:
+    - cron: '0 15 * * *' # Runs daily at 15:00 UTC (8:00 AM PDT)
+  workflow_dispatch: # Allows you to run it manually
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      - name: Execute Python script
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python main.py
